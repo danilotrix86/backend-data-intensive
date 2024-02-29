@@ -31,7 +31,8 @@ docker-compose exec spark-master /opt/bitnami/spark/bin/spark-submit --packages 
 Similar to the previous step, this command submits a Spark job for execution. However, this job consumes data from Kafka, processes it, and then saves the results to PostgreSQL. The --jars option includes the PostgreSQL JDBC driver necessary for Spark to interact with the PostgreSQL database.
 
 ## Accessing the Streamlit Application
-After all services are up and the Spark jobs are running, you can access the Streamlit application by navigating to [http://localhost:8501](http://localhost:8501) in your web browser. The application displays data fetched from PostgreSQL, refreshing every 10 seconds to reflect new data processed by Spark.
+After all services are up and the Spark jobs are running, you can access the Streamlit application by navigating to [http://localhost:8501](http://localhost:8501) in your web browser. 
+The application displays data fetched from PostgreSQL, refreshing every 10 seconds to reflect new data processed by Spark.
 
 ## Architecture Overview
 ### Apache Spark
