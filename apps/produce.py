@@ -4,21 +4,28 @@ import random
 import json
 import time
 
+# Kafka configuration settings
 KAFKA_BOOTSTRAP_SERVERS = "kafka:9092"
 KAFKA_TOPIC = "invoice"
 
+# Initialize SparkSession with a specific application name
 spark = SparkSession.builder.appName("write_test_stream").getOrCreate()
 
-# Reduce logging
+# Set log level to WARN to reduce verbosity of Spark output
 spark.sparkContext.setLogLevel("WARN")
 
 def generate_random_json():
+    """
+    Generates a random JSON string representing an invoice with a unique bill number,
+    creation time, store ID, payment mode, and total value.
+    """
     # Convert milliseconds since epoch to a datetime object
     created_time = datetime.utcfromtimestamp(random.randint(1590000000000, 1600000000000) / 1000.0)
 
     # Format the datetime object as a string in ISO 8601 format
     created_time_str = created_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ')
 
+    # Return a JSON string with random data for the invoice
     return json.dumps({
         "BillNum": str(random.randint(10000000, 99999999)),
         "CreatedTime": created_time_str,
@@ -29,13 +36,13 @@ def generate_random_json():
 
 try:
     while True:
-        # Generate a single JSON message
+        # Generate a random JSON message representing an invoice
         message = generate_random_json()
 
-        # Create a DataFrame with a single row
+        # Create a DataFrame with a single row containing the message
         df = spark.createDataFrame([(message,)], ["value"])
 
-        # Write the single message to Kafka
+        # Convert the DataFrame column to a string and write the message to Kafka
         df.selectExpr("CAST(value AS STRING)") \
           .write \
           .format("kafka") \
@@ -45,8 +52,9 @@ try:
 
         print(f"Sent message: {message}")
 
-        # Sleep for 1 second to send the next message approximately every second
+        # Pause for 1 second to regulate the message send rate
         time.sleep(1)
 
 except KeyboardInterrupt:
+    # Gracefully handle a manual script stop
     print("Stopped.")

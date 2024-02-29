@@ -86,9 +86,9 @@ services:
   postgresql:
     image: bitnami/postgresql:latest
     environment:
-      - POSTGRES_DB=invoice_db  # Change as needed
-      - POSTGRES_USER=my_user    # Change as needed
-      - POSTGRES_PASSWORD=my_password  # Change as needed
+      - POSTGRES_DB=invoice_db
+      - POSTGRES_USER=my_user
+      - POSTGRES_PASSWORD=my_password
     volumes:
       - postgresql-data:/bitnami/postgresql
       - ./initdb:/docker-entrypoint-initdb.d 
