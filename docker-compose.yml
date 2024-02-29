@@ -91,6 +91,19 @@ services:
       - POSTGRES_PASSWORD=my_password  # Change as needed
     volumes:
       - postgresql-data:/bitnami/postgresql
+      - ./initdb:/docker-entrypoint-initdb.d 
     ports:
       - "5432:5432"
+
+
+  # ----------------- #
+  # streamlit        #
+  # ----------------- #
+
+  streamlit:
+    build: ./apps  
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./apps:/app  
   

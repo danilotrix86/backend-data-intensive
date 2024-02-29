@@ -1,4 +1,5 @@
 from pyspark.sql import SparkSession
+from datetime import datetime
 import random
 import json
 import time
@@ -12,9 +13,15 @@ spark = SparkSession.builder.appName("write_test_stream").getOrCreate()
 spark.sparkContext.setLogLevel("WARN")
 
 def generate_random_json():
+    # Convert milliseconds since epoch to a datetime object
+    created_time = datetime.utcfromtimestamp(random.randint(1590000000000, 1600000000000) / 1000.0)
+
+    # Format the datetime object as a string in ISO 8601 format
+    created_time_str = created_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+
     return json.dumps({
         "BillNum": str(random.randint(10000000, 99999999)),
-        "CreatedTime": random.randint(1590000000000, 1600000000000),
+        "CreatedTime": created_time_str,
         "StoreID": "STR" + str(random.randint(1000, 9999)),
         "PaymentMode": random.choice(["CARD", "CASH", "ONLINE", "WALLET"]),
         "TotalValue": round(random.uniform(100, 10000), 2)
