@@ -40,7 +40,7 @@ try:
             SELECT billnum, createdtime, storeid, paymentmode, totalvalue
             FROM invoices
             ORDER BY id DESC
-            LIMIT 10
+            LIMIT 20
         """)
         # Executing the query
         result = conn.execute(query)
