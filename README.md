@@ -6,6 +6,16 @@ Before you begin, ensure you have Docker and Docker Compose installed on your sy
 
 ## Setup and Run
 
+### Clone from GIT
+```
+git clone https://github.com/danilotrix86/backend-data-intensive.git
+```
+
+### Enter the folder
+```
+cd .\backend-data-intensive\
+```
+
 ### Step 1: Start All Services
 To start all services defined in the docker-compose.yml, run the following command. This command builds and starts the containers necessary for the application, including the setup for Apache Spark, Apache Kafka, PostgreSQL, and the Streamlit app.
 
@@ -32,7 +42,7 @@ Similar to the previous step, this command submits a Spark job for execution. Ho
 
 ## Accessing the Streamlit Application
 After all services are up and the Spark jobs are running, you can access the Streamlit application by navigating to [http://localhost:8501](http://localhost:8501) in your web browser. 
-The application displays data fetched from PostgreSQL, refreshing every 10 seconds to reflect new data processed by Spark.
+The application displays data fetched from PostgreSQL, refreshing every 5 seconds to reflect new data processed by Spark.
 
 ## Architecture Overview
 ### Apache Spark

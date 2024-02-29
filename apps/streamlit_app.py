@@ -25,10 +25,10 @@ st.set_page_config(layout="wide")
 st.title('Dashboard for Invoices')
 
 # Description text explaining the purpose of the Streamlit app
-st.write("This Streamlit app connects to a PostgreSQL database, displaying data that refreshes every 10 seconds.")
+st.write("This Streamlit app connects to a PostgreSQL database, displaying data that refreshes every 5 seconds.")
 
 # Initialize auto-refresh with a 10-second interval
-st_autorefresh(interval=10000, key="data_refresh")
+st_autorefresh(interval=5000, key="data_refresh")
 
 # Try block to handle database connection and data fetching
 try:
