@@ -33,6 +33,7 @@ docker-compose exec spark-master /opt/bitnami/spark/bin/spark-submit --packages 
 This command runs a Spark job on the spark-master service that produces data to a Kafka topic. The --packages option includes the necessary Spark Kafka integration package, enabling Spark to publish data to Kafka.
 
 ### Step 3: Submit Spark Job for Data Consumption
+When the producer starts sending data you can proceed with step 3.
 To consume the data from Kafka, process it, and save it to PostgreSQL, run the following command:
 
 ```
