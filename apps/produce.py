@@ -29,7 +29,7 @@ def generate_random_json():
     return json.dumps({
         "BillNum": str(random.randint(10000000, 99999999)),
         "CreatedTime": created_time_str,
-        "StoreID": "STR" + str(random.randint(1000, 9999)),
+        "StoreID": "STR" + str(random.randint(1000, 1050)),
         "PaymentMode": random.choice(["CARD", "CASH", "ONLINE", "WALLET"]),
         "TotalValue": round(random.uniform(100, 10000), 2)
     })

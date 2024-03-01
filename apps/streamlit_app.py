@@ -40,7 +40,7 @@ try:
             SELECT billnum, createdtime, storeid, paymentmode, totalvalue
             FROM invoices
             ORDER BY id DESC
-            LIMIT 20
+            LIMIT 10
         """)
         # Executing the query
         result = conn.execute(query)
@@ -48,7 +48,7 @@ try:
         df = pd.DataFrame(result.fetchall(), columns=result.keys())
 
     # Displaying a message to indicate successful data fetching
-    st.write("Data fetched from the database:")
+    st.write("Latest Invoices Data:")
 
     # Displaying the fetched data as a DataFrame in the Streamlit app
     st.dataframe(df)
@@ -57,4 +57,28 @@ try:
 except Exception as e:
     # Displaying an error message followed by the specific error detail
     st.write("Error connecting to the database:")
+    st.write(str(e))
+
+
+# Try block to handle database connection and data fetching for aggregated sales data
+try:
+    with engine.connect() as conn:
+        # SQL query to select aggregated sales data from the store_sales_summary table
+        sales_query = text("""
+            SELECT windowstart, windowend, storeid, totalsales
+            FROM store_sales_summary
+            ORDER BY windowstart DESC
+            LIMIT 10
+        """)
+        # Executing the sales query
+        sales_result = conn.execute(sales_query)
+        # Converting the result into a pandas DataFrame
+        sales_df = pd.DataFrame(sales_result.fetchall(), columns=sales_result.keys())
+
+    # Displaying a message and the fetched data for aggregated sales
+    st.write("Aggregated Sales Data:")
+    st.dataframe(sales_df)
+
+except Exception as e:
+    st.write("Error fetching aggregated sales data:")
     st.write(str(e))

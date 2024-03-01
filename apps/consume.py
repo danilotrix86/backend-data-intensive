@@ -51,5 +51,45 @@ def foreach_batch_function(df, epoch_id):
 # Set up the streaming query to process each batch using the `foreachBatch` function
 query = json_df.writeStream.foreachBatch(foreach_batch_function).start()
 
-# Wait for the streaming query to terminate, processing indefinitely until stopped
-query.awaitTermination()
+
+
+# AGGREGRATION
+
+# Aggregate data over a 10-second window
+aggregated_df = json_df \
+    .withWatermark("CreatedTime", "2 minutes") \
+    .groupBy(
+        window("CreatedTime", "10 seconds"),  # 10-second window
+        "StoreID"
+    ) \
+    .agg(
+        sum("TotalValue").alias("TotalSales")  # Sum TotalValue for each StoreID in the window
+    ) \
+    .select(
+        col("window.start").alias("WindowStart"), 
+        col("window.end").alias("WindowEnd"), 
+        col("StoreID"), 
+        col("TotalSales")
+    )
+
+def foreach_batch_function_aggregated(df, epoch_id):
+    df.write \
+        .format("jdbc") \
+        .option("url", POSTGRES_URL) \
+        .option("dbtable", "store_sales_summary") \
+        .option("user", POSTGRES_USER) \
+        .option("password", POSTGRES_PASSWORD) \
+        .option("driver", "org.postgresql.Driver") \
+        .mode("append") \
+        .save()
+
+# Set up the streaming query for the aggregated data
+query_aggregated = aggregated_df.writeStream.foreachBatch(foreach_batch_function_aggregated).outputMode("update").start()
+
+
+
+queries = [query, query_aggregated]
+
+# Wait for all streaming queries to terminate
+for q in queries:
+    q.awaitTermination()
