@@ -54,3 +54,7 @@ Acts as the messaging layer, facilitating the decoupled communication between da
 Serves as the persistent storage for processed data, which is then visualized through the Streamlit application.
 ### Streamlit
 Provides a web interface for visualizing the data stored in PostgreSQL, updating in real-time as new data is processed and saved.
+
+## Screenshot of the Dashboard View
+<img width="561" alt="dashboard view" src="https://github.com/danilotrix86/backend-data-intensive/assets/68116543/1cc49e80-e910-4bd6-8c47-1da9dd1255c8">
+
